@@ -14,6 +14,11 @@ function loadEventListeners() {
   coursesList.addEventListener("click", handleClickAddBtn);
   cart.addEventListener("click", handleClickRemoveCart);
   emptyCartBtn.addEventListener("click", handleClickEmptyCart);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    cartArticles = JSON.parse(localStorage.getItem("carrito")) || [];
+    cartHTML();
+  });
 }
 
 function handleClickAddBtn(e) {
@@ -51,6 +56,7 @@ function readDatesCourse(course) {
     const courses = cartArticles.map((course) => {
       if (course.id === infoCourse.id) {
         course.quantity++;
+
         return course;
       } else {
         return course;
@@ -80,8 +86,14 @@ function cartHTML() {
 
         `;
     cartContainer.appendChild(row);
+    syncLocalStorage();
   });
 }
+
+function syncLocalStorage() {
+  localStorage.setItem("cart", JSON.stringify(cartArticles));
+}
+
 function cleanHTML() {
   cartContainer.innerHTML = "";
 }
